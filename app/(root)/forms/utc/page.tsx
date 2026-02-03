@@ -25,6 +25,23 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 
+/** Parsea fecha DD/MM/YYYY y devuelve la edad en años (hoy). */
+function edadDesdeNacimiento(nacimientoStr: string): number | null {
+    const trimmed = nacimientoStr.trim()
+    if (!trimmed || trimmed.length < 8) return null
+    const parts = trimmed.split("/")
+    if (parts.length !== 3) return null
+    const [d, m, y] = parts.map((p) => parseInt(p, 10))
+    if (isNaN(d) || isNaN(m) || isNaN(y)) return null
+    const birth = new Date(y, m - 1, d)
+    if (isNaN(birth.getTime())) return null
+    const today = new Date()
+    let age = today.getFullYear() - birth.getFullYear()
+    const monthDiff = today.getMonth() - birth.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--
+    return age
+}
+
 const formSchema = z.object({
     nombres: z.string().min(2, { message: "Mínimo 2 carácteres" }).max(50, { message: "Máximo 50 carácteres" }),
     apellidos: z.string().min(2, { message: "Mínimo 2 carácteres" }).max(50, { message: "Máximo 50 carácteres" }),
@@ -93,7 +110,8 @@ const IndividualPage = () => {
         try {
             const categoriaMap: Record<string, string> = {
                 "UNIVERSITARIOS UTC": "1",
-                "TRABAJADORES UTC": "2",
+                "DOCENTES SENIOR (hasta 39 años)": "3",
+                "DOCENTES MASTER (40 años en adelante)": "4",
             }
             const tipo = categoriaMap[values.categoria] ?? null
             if (!tipo) {
@@ -104,6 +122,34 @@ const IndividualPage = () => {
                     variant: "destructive",
                 })
                 router.push("/")
+                return
+            }
+            const edad = edadDesdeNacimiento(values.nacimiento)
+            if (edad === null) {
+                toast({
+                    title: "Fecha de nacimiento inválida",
+                    description: "Use el formato DD/MM/YYYY (ej: 14/09/2001).",
+                    duration: 3000,
+                    variant: "destructive",
+                })
+                return
+            }
+            if (values.categoria === "DOCENTES SENIOR (hasta 39 años)" && edad > 39) {
+                toast({
+                    title: "Categoría no corresponde",
+                    description: "Docentes Senior es para personas hasta 39 años. Su edad indica que debe inscribirse en Docentes Master.",
+                    duration: 4000,
+                    variant: "destructive",
+                })
+                return
+            }
+            if (values.categoria === "DOCENTES MASTER (40 años en adelante)" && edad < 40) {
+                toast({
+                    title: "Categoría no corresponde",
+                    description: "Docentes Master es para personas de 40 años en adelante. Su edad indica que debe inscribirse en Docentes Senior.",
+                    duration: 4000,
+                    variant: "destructive",
+                })
                 return
             }
             const res = await fetch("/api/utc/validate", {
@@ -324,7 +370,8 @@ const IndividualPage = () => {
                                             </FormControl>
                                             <SelectContent className="bg-slate-800 border-slate-600 text-white [&_[data-highlighted]]:bg-slate-700 [&_[data-highlighted]]:text-white">
                                                 <SelectItem value="UNIVERSITARIOS UTC">UNIVERSITARIOS UTC</SelectItem>
-                                                <SelectItem value="TRABAJADORES UTC">DOCENTES, EMPLEADOS Y TRABAJADORES UTC</SelectItem>
+                                                <SelectItem value="DOCENTES SENIOR (hasta 39 años)">DOCENTES SENIOR (hasta 39 años)</SelectItem>
+                                                <SelectItem value="DOCENTES MASTER (40 años en adelante)">DOCENTES MASTER (40 años en adelante)</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
