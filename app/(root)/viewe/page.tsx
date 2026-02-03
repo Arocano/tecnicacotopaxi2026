@@ -7,19 +7,19 @@ import {
 import { DataTable } from '@/components/shared/table';
 import Link from 'next/link';
 type dataTable = {
-    id: string;
-        nombres: string,
-        apellidos: string,
-        email: string,
-        nacimiento: Date,
-        telefono: string,
-        camiseta: string,
-        distancia: string,
-        cedula: string,
-        competencia: string,
-        categoria: string,
-        genero: string,
-        comprobante: string
+    id: string
+    nombres: string
+    apellidos: string
+    email: string
+    nacimiento: Date | string
+    telefono: string
+    camiseta: string
+    distancia?: string
+    cedula: string
+    competencia?: string
+    categoria: string
+    genero: string
+    comprobante: string
 }
 const columns: ColumnDef<dataTable>[] = [
     {

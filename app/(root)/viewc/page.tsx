@@ -10,25 +10,21 @@ import { DataTable } from '@/components/shared/table';
 import Link from 'next/link';
 import * as XLSX from "xlsx";
 type dataTable = {
-    id: string;
-
-    nombres: string,
-    apellidos: string,
-    email: string,
-    nacimiento: Date,
-    telefono: string,
-    camiseta: string,
-    distancia: string,
-    cedula: string,
-    competencia: string,
-    categoria: string,
-    genero: string,
-    createdAt: any,
+    id: string
+    nombres: string
+    apellidos: string
+    email: string
+    nacimiento: Date | string
+    telefono: string
+    camiseta: string
+    distancia?: string
+    cedula: string
+    competencia?: string
+    categoria: string
+    genero: string
+    createdAt: unknown
     comprobante: string
-    carrera: string
-
-
-
+    carrera?: string
 }
 const columns: ColumnDef<dataTable>[] = [
     {
