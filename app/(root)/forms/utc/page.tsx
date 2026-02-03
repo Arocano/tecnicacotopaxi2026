@@ -110,8 +110,8 @@ const IndividualPage = () => {
         try {
             const categoriaMap: Record<string, string> = {
                 "UNIVERSITARIOS UTC": "1",
-                "DOCENTES SENIOR (hasta 39 años)": "3",
-                "DOCENTES MASTER (40 años en adelante)": "4",
+                "DOCENTES SENIOR (hasta 39 años)": "2",
+                "DOCENTES MASTER (40 años en adelante)": "2",
             }
             const tipo = categoriaMap[values.categoria] ?? null
             if (!tipo) {
