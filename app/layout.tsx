@@ -21,8 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          {children}
-          <Toaster />
+          <div style={{ width: "100vw", maxWidth: "100vw", overflowX: "hidden" }}>
+            {children}
+            <Toaster />
+          </div>
         </Providers>
       </body>
     </html>

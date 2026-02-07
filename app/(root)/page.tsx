@@ -1,187 +1,227 @@
 "use client"
 
+import { useState } from "react"
+import dynamic from "next/dynamic"
 import Image from "next/image"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
+import type { MountainPointId } from "@/components/mountain-scene"
+
+const MountainScene = dynamic(() => import("@/components/mountain-scene").then((m) => ({ default: m.MountainScene })), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full min-h-screen flex items-center justify-center bg-slate-950 text-slate-400">
+            Cargando montaña 3D…
+        </div>
+    ),
+})
 
 const Home = () => {
     const router = useRouter()
+    const [activePoint, setActivePoint] = useState<MountainPointId | null>(null)
 
     return (
-        <div className="min-h-screen flex flex-col bg-slate-950 text-white">
-            {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 lg:px-8 bg-slate-950/90 backdrop-blur-md border-b border-white/5">
-                <Image
-                    src="/images/fondo.png"
-                    width={120}
-                    height={80}
-                    className="h-14 w-auto object-contain lg:h-16"
-                    alt="Logo organizador"
-                    priority
-                />
-                <Image
-                    src="/images/Recurso2.svg"
-                    width={180}
-                    height={80}
-                    className="h-12 w-auto object-contain lg:h-16 lg:max-w-[220px]"
-                    alt="Logo carrera"
-                    priority
-                />
-            </header>
-
-            {/* Hero */}
-            <section
-                className="relative flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 pt-24 pb-16 lg:pt-28 lg:pb-20 min-h-screen"
-                style={{
-                    backgroundImage: "url(/images/Recurso6.svg)",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/40 to-slate-950/80 pointer-events-none" />
-                <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl mx-auto gap-10 lg:gap-16">
-                    {/* Título / gráfico principal */}
-                    <div className="flex-1 flex justify-center">
+        <div className="h-screen flex flex-col bg-slate-950 text-white overflow-hidden w-full">
+            <section className="relative w-full h-full flex-1 min-h-0">
+                <div className="absolute inset-0 bg-gradient-to-b from-sky-100 via-slate-200 to-slate-400" aria-hidden />
+                <MountainScene onPointClick={setActivePoint} className="absolute inset-0 w-full h-full" labelsVisible={activePoint === null} />
+                {/* Cartel inscripción — esquina superior derecha; más compacto en móvil */}
+                <div className="absolute top-4 right-4 z-10 w-[min(320px,calc(100vw-2rem))] max-sm:top-2 max-sm:right-2 max-sm:left-2 max-sm:w-auto max-sm:p-3 rounded-2xl border border-slate-500/40 bg-slate-900/95 shadow-xl backdrop-blur-sm p-4">
+                    <div className="aspect-[520/220] w-full max-h-[100px] max-sm:max-h-[70px] mb-3 max-sm:mb-2">
                         <Image
-                            src="/images/Recurso3.svg"
-                            width={700}
-                            height={200}
-                            className="w-full max-w-md lg:max-w-[520px] object-contain drop-shadow-2xl"
-                            alt="10K Cotopaxi - Latacunga"
-                            priority
+                            src="/images/main.svg"
+                            width={520}
+                            height={220}
+                            className="w-full h-full object-contain"
+                            alt="10K Ruta del Cotopaxi - Segunda Edición - 3 de mayo"
                         />
                     </div>
+                    <p className="text-slate-200 text-sm leading-snug max-sm:text-xs max-sm:leading-snug">
+                        Inscríbete a la carrera. Elige modalidad UTC o público general y adjunta tu comprobante de pago.
+                    </p>
+                </div>
+                <p className="absolute bottom-16 left-0 right-0 text-center text-slate-500 text-sm z-10 pointer-events-none">
+                    Haz clic en los puntos de la montaña · Arrastra para rotar
+                </p>
+            </section>
 
-                    {/* CTA y contenido */}
-                    <div className="flex flex-col items-center lg:items-start gap-6 text-center lg:text-left">
-                        <div className="space-y-2">
-                            <p className="text-lg lg:text-xl text-amber-400/95 font-medium tracking-wide">
-                                Latacunga · Cotopaxi
-                            </p>
-                            <p className="text-white font-semibold">
-                                Fecha del evento: 3 de Mayo
-                            </p>
-                            <p className="text-white/90 text-sm lg:text-base max-w-sm">
-                                Inscríbete a la carrera 10K. Elige tu modalidad y completa tu registro con el comprobante de pago.
-                            </p>
-                        </div>
-                        <AlertDialog>
-                            <AlertDialogTrigger className="inline-flex items-center justify-center rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-lg lg:text-xl px-8 py-4 shadow-lg shadow-amber-500/25 transition-all hover:scale-105 active:scale-100">
-                                Inscríbete ahora
-                            </AlertDialogTrigger>
-                            <AlertDialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-slate-900 border-slate-700 text-white">
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle className="text-xl text-amber-400">
-                                        Información de pago e inscripción
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription asChild>
-                                        <div className="text-left text-slate-300 space-y-4 pt-2">
-                                            <div>
-                                                <span className="font-semibold text-white">1. Pago</span>
-                                                <p className="mt-1">Transferencia o depósito bancario:</p>
-                                                <ul className="mt-2 list-disc list-inside space-y-1 text-sm">
-                                                    <li>Banco Pichincha · Cuenta de ahorros</li>
-                                                    <li>No. 2212759904</li>
-                                                    <li>A nombre de: Isabel Armas Heredia</li>
-                                                    <li>CC: 0502298482</li>
-                                                </ul>
-                                            </div>
-                                            <div className="rounded-lg bg-slate-800/60 p-3">
-                                                <span className="font-semibold text-white">Precios</span>
-                                                <p className="mt-2 font-medium text-white/90 text-sm">Valor de inscripción</p>
-                                                <ul className="mt-1 list-disc list-inside space-y-0.5 text-sm">
-                                                    <li><strong>$10</strong> preventa todo febrero / <strong>$12</strong> desde el 1 de marzo — Juvenil, inclusiva, universitarios, personal administrativo y trabajadores UTC</li>
-                                                    <li><strong>$20</strong> — Docentes UTC y demás categorías</li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <span className="font-semibold text-white">2. Inscripción</span>
-                                                <p className="mt-1 text-sm">Elige tu modalidad (UTC o Público general) y adjunta el comprobante en el formulario.</p>
-                                            </div>
-                                            <div className="rounded-lg bg-slate-800/80 p-3 text-sm">
-                                                <span className="font-semibold text-amber-400">Punto físico de inscripciones</span>
-                                                <p className="mt-1">JP Digital</p>
-                                                <p>Quijano y Ordoñez entre Juan Abel Echeverría y Guayaquil 76-55 (Sector La Merced), Latacunga</p>
-                                                <p>Tel: 0993151798</p>
-                                            </div>
-                                        </div>
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter className="flex-col sm:flex-row gap-2 pt-4">
-                                    <AlertDialogCancel className="bg-slate-700 hover:bg-slate-600 text-white border-0">
-                                        Cancelar
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction
+            {/* Modal al hacer clic en un punto */}
+            {activePoint && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+                    <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 bg-slate-900 shadow-2xl">
+                        <button
+                            type="button"
+                            onClick={() => setActivePoint(null)}
+                            className="absolute top-4 right-4 z-10 rounded-full p-2 text-slate-400 hover:text-white hover:bg-white/10 transition"
+                            aria-label="Cerrar"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        {activePoint === "inscription" && (
+                            <div className="p-6 sm:p-8 flex flex-col gap-5">
+                                <h2 className="text-lg sm:text-xl font-semibold text-amber-400 text-center">
+                                    Información de pago e inscripción
+                                </h2>
+                                <div className="text-left text-slate-300 space-y-4 text-sm">
+                                    <div>
+                                        <span className="font-semibold text-white">1. Pago</span>
+                                        <p className="mt-1">Transferencia o depósito:</p>
+                                        <ul className="mt-2 list-disc list-inside space-y-0.5">
+                                            <li>Banco Pichincha · Ahorros 2212759904</li>
+                                            <li>Isabel Armas Heredia · CC 0502298482</li>
+                                        </ul>
+                                    </div>
+                                    <div className="rounded-lg bg-slate-800/60 p-3">
+                                        <span className="font-semibold text-white">Precios</span>
+                                        <ul className="mt-1 list-disc list-inside space-y-0.5">
+                                            <li><strong>$10</strong> feb / <strong>$12</strong> desde mar — Juvenil, inclusiva, universitarios, trabajadores UTC</li>
+                                            <li><strong>$20</strong> — Docentes UTC y demás</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <span className="font-semibold text-white">2. Inscripción</span>
+                                        <p className="mt-1">Elige UTC o Público general y sube el comprobante en el formulario.</p>
+                                    </div>
+                                    <div className="rounded-lg bg-slate-800/80 p-3">
+                                        <span className="font-semibold text-amber-400">Punto físico</span>
+                                        <p className="mt-1">JP Digital · Quijano y Ordoñez 76-55, La Merced, Latacunga · 0993151798</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                                    <button
+                                        type="button"
                                         onClick={() => router.push("forms/utc")}
-                                        className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold"
+                                        className="flex-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold py-3.5 sm:py-4 transition"
                                     >
                                         Inscripción UTC
-                                    </AlertDialogAction>
-                                    <AlertDialogAction
+                                    </button>
+                                    <button
+                                        type="button"
                                         onClick={() => router.push("forms/general")}
-                                        className="bg-slate-600 hover:bg-slate-500 text-white font-semibold"
+                                        className="flex-1 rounded-xl bg-slate-600 hover:bg-slate-500 text-white font-semibold py-3.5 sm:py-4 transition"
                                     >
                                         Público general
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {activePoint === "fecha" && (
+                            <div className="p-8 text-center flex flex-col items-center gap-6">
+                                <h3 className="text-xl font-bold text-amber-400 mb-2">Organizan</h3>
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 flex-wrap">
+                                    <div className="h-16 w-auto max-w-[140px] flex items-center justify-center">
+                                        <Image
+                                            src="/images/logo-utc.svg"
+                                            width={140}
+                                            height={64}
+                                            className="h-16 w-auto object-contain"
+                                            alt="UTC"
+                                        />
+                                    </div>
+                                    <div className="h-16 w-auto max-w-[140px] flex items-center justify-center">
+                                        <Image
+                                            src="/images/logo-years.svg"
+                                            width={140}
+                                            height={64}
+                                            className="h-16 w-auto object-contain"
+                                            alt="Years"
+                                        />
+                                    </div>
+                                    <div className="h-20 w-auto max-w-[120px] flex items-center justify-center">
+                                        <Image
+                                            src="/images/rectora.svg"
+                                            width={120}
+                                            height={80}
+                                            className="h-20 w-auto object-contain"
+                                            alt="Rectora"
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-slate-400 text-sm">3 de mayo · Segunda edición · 10K Ruta del Cotopaxi</p>
+                            </div>
+                        )}
+
+                        {activePoint === "lugar" && (
+                            <div className="p-8 text-center flex flex-col items-center gap-5">
+                                <h3 className="text-xl font-bold text-amber-400 mb-2">En colaboración</h3>
+                                <a
+                                    href="https://www.r2timing.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-col items-center gap-2 hover:opacity-90 transition"
+                                >
+                                    <div className="h-16 w-auto max-w-[160px] flex items-center justify-center">
+                                        <Image
+                                            src="/images/r2.png"
+                                            width={160}
+                                            height={64}
+                                            className="h-16 w-auto object-contain"
+                                            alt="R2TIMING - Cronometraje Deportivo"
+                                        />
+                                    </div>
+                                    <p className="text-slate-400 text-sm">Proveedor de cronometraje</p>
+                                </a>
+                                <div className="text-slate-300 text-sm space-y-1">
+                                    <p className="font-semibold text-white">Cronometraje Electrónico</p>
+                                    <p className="max-w-sm">
+                                        Medición de tiempos con precisión profesional utilizando chips descartables o reusables para cada atleta.
+                                    </p>
+                                </div>
+                                <a
+                                    href="https://www.r2timing.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-amber-400 hover:text-amber-300 text-sm font-medium transition"
+                                >
+                                    www.r2timing.com
+                                </a>
+                            </div>
+                        )}
+
+                        {activePoint === "info" && (
+                            <div className="p-8 text-center flex flex-col items-center gap-5">
+                                <h3 className="text-xl font-bold text-amber-400 mb-2">Más información</h3>
+                                <a
+                                    href="https://www.utc.edu.ec/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-col items-center gap-2 hover:opacity-90 transition"
+                                >
+                                    <div className="w-full max-w-[420px] h-auto flex items-center justify-center">
+                                        <Image
+                                            src="/images/muestra.svg"
+                                            width={420}
+                                            height={252}
+                                            className="w-full h-auto object-contain"
+                                            alt="Universidad Técnica de Cotopaxi"
+                                        />
+                                    </div>
+                                </a>
+                                <a
+                                    href="https://www.utc.edu.ec/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-amber-400 hover:text-amber-300 text-sm font-medium transition"
+                                >
+                                    www.utc.edu.ec
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
-            </section>
+            )}
 
-            {/* Organizadores */}
-            <section className="relative py-12 lg:py-16 px-4 bg-slate-900/50 border-t border-white/5">
-                <div className="max-w-4xl mx-auto text-center">
-                    <p className="text-sm uppercase tracking-widest text-white/50 mb-6">
-                        Organizan
-                    </p>
-                    <Image
-                        src="/images/Recurso4.svg"
-                        width={800}
-                        height={120}
-                        className="w-full max-w-2xl mx-auto object-contain opacity-95"
-                        alt="Logos de organizadores"
-                    />
-                </div>
-            </section>
-
-            {/* Rectora / Respaldo institucional */}
-            <section className="py-8 lg:py-10 px-4 bg-slate-950 border-t border-white/5">
-                <div className="max-w-3xl mx-auto flex flex-col items-center gap-4">
-                    <p className="text-xs uppercase tracking-widest text-white/40">
-                        Con el respaldo de
-                    </p>
-                    <Image
-                        src="/images/Recurso7.svg"
-                        width={200}
-                        height={80}
-                        className="w-40 lg:w-52 object-contain opacity-90"
-                        alt="Rectora - Universidad Técnica de Cotopaxi"
-                    />
-                </div>
-            </section>
-
-            {/* Powered by */}
-            <footer className="py-4 px-4 bg-slate-950 border-t border-white/5">
+            <footer className="fixed bottom-0 left-0 right-0 py-3 px-4 border-t border-white/10 bg-slate-900/90 backdrop-blur-sm z-20">
                 <a
                     href="https://www.shibatech.tech/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center text-xs text-white/40 hover:text-amber-400/80 transition-colors"
+                    className="block text-center text-base font-medium text-slate-400 hover:text-amber-400 transition-colors"
                 >
-                    Powered by Shibatech
+                    Powered by <span className="text-white/90 font-semibold">Shibatech</span>
                 </a>
             </footer>
         </div>
