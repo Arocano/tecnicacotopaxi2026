@@ -190,7 +190,7 @@ const Home = () => {
                                     rel="noopener noreferrer"
                                     className="flex flex-col items-center gap-2 hover:opacity-90 transition"
                                 >
-                                    <div className="w-full max-w-[420px] h-auto flex items-center justify-center">
+                                    <div className="w-full max-w-[280px] h-auto flex items-center justify-center">
                                         <Image
                                             src="/images/muestra.svg"
                                             width={420}
@@ -200,6 +200,12 @@ const Home = () => {
                                         />
                                     </div>
                                 </a>
+                                <div className="flex flex-col items-center gap-3 max-w-md">
+                                    <h4 className="text-lg font-bold text-amber-400">Opciones de inscripción</h4>
+                                    <p className="text-white text-base font-semibold leading-relaxed">
+                                        Inscríbete a la carrera. Elige modalidad UTC o público general y adjunta tu comprobante de pago.
+                                    </p>
+                                </div>
                                 <a
                                     href="https://www.utc.edu.ec/"
                                     target="_blank"
