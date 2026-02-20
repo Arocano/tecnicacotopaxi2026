@@ -111,8 +111,8 @@ const Home = () => {
                                 <div className="rounded-lg bg-slate-800/60 p-3">
                                     <span className="font-semibold text-white">Precios</span>
                                     <ul className="mt-1 list-disc list-inside space-y-0.5">
-                                        <li><strong>$10</strong> feb / <strong>$12</strong> desde mar — Juvenil, inclusiva, universitarios, trabajadores UTC</li>
-                                        <li><strong>$20</strong> — Docentes UTC y demás</li>
+                                        <li><strong>$10</strong> feb / <strong>$12</strong> desde mar — Juvenil, inclusiva, universitarios</li>
+                                        <li><strong>$20</strong> — Docentes, empleados y trabajadores de la UTC, y demás</li>
                                     </ul>
                                 </div>
                                 <div>

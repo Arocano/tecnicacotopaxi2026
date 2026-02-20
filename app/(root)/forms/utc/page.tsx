@@ -368,7 +368,7 @@ const IndividualPage = () => {
                                                     <SelectValue placeholder="Selecciona tu categoría" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="bg-slate-800 border-slate-600 text-white [&_[data-highlighted]]:bg-slate-700 [&_[data-highlighted]]:text-white">
+                                            <SelectContent className="bg-slate-800 border-slate-600 text-white [&_[data-highlighted]]:bg-slate-700 [&_[data-highlighted]]:text-white" translate="no">
                                                 <SelectItem value="UNIVERSITARIOS UTC">UNIVERSITARIOS UTC</SelectItem>
                                                 <SelectItem value="DOCENTES SENIOR (hasta 39 años)">DOCENTES SENIOR (hasta 39 años)</SelectItem>
                                                 <SelectItem value="DOCENTES MASTER (40 años en adelante)">DOCENTES MASTER (40 años en adelante)</SelectItem>
