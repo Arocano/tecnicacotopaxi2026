@@ -101,7 +101,18 @@ const Home = () => {
                                 <div>
                                     <span className="font-semibold text-white">1. Pago</span>
                                     <p className="mt-1">Transferencia o depósito:</p>
-                                    <ul className="mt-2 list-disc list-inside space-y-0.5">
+                                    <div className="mt-3 w-full flex justify-center">
+                                        <div className="w-full max-w-[360px] bg-white rounded-lg p-2">
+                                            <Image
+                                                src="/images/Banco_Pichincha_nuevo.png"
+                                                width={720}
+                                                height={240}
+                                                className="w-full h-auto object-contain"
+                                                alt="Datos de cuenta Banco Pichincha"
+                                            />
+                                        </div>
+                                    </div>
+                                    <ul className="mt-3 list-disc list-inside space-y-0.5">
                                         <li>Banco Pichincha</li>
                                         <li>Cuenta de ahorro transaccional</li>
                                         <li>Número: 2204030982</li>
