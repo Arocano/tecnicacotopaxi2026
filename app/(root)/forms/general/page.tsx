@@ -282,7 +282,7 @@ const GeneralPage = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="bg-slate-800 border-slate-600 text-white [&_[data-highlighted]]:bg-slate-700 [&_[data-highlighted]]:text-white" translate="no">
-                                                <SelectItem value="JUVENIL">JUVENIL (17-19)</SelectItem>
+                                                <SelectItem value="JUVENIL">JUVENIL (17-18)</SelectItem>
                                                 <SelectItem value="SENIOR-ELITE">SENIOR-ELITE (19-39)</SelectItem>
                                                 <SelectItem value="MASTER">MASTER (40-49)</SelectItem>
                                                 <SelectItem value="SUPER MASTER">SUPER MASTER (50-59)</SelectItem>
