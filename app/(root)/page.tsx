@@ -122,7 +122,7 @@ const Home = () => {
                                 <div className="rounded-lg bg-slate-800/60 p-3">
                                     <span className="font-semibold text-white">Precios</span>
                                     <ul className="mt-1 list-disc list-inside space-y-0.5">
-                                        <li><strong>$12</strong>— Juvenil, inclusiva, universitarios</li>
+                                        <li><strong>$10</strong>— Juvenil, inclusiva, universitarios</li>
                                         <li><strong>$20</strong> — Docentes, empleados y trabajadores UTC, y demás</li>
                                     </ul>
                                 </div>
